@@ -1,0 +1,106 @@
+//* This file is used for detailed editting creator.
+
+
+import {useState} from 'react';
+import { supabase } from '../client';
+
+function CreatorEdit({id}){
+
+  
+  const [image, setImage] = useState(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [url, setUrl] = useState("");
+
+  
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  }
+
+   async function handleSubmit(e){
+      
+
+      // Prevent default behaviour
+      e.preventDefault();
+
+      if(!image){
+        alert("Please select an image");
+        return;
+      }
+
+      const filePath = `creators/${crypto.randomUUID()}-${image.name}`;
+      // Upload image to storage
+      const { data: dataImage, error: errorImage } =
+        await supabase.storage
+          .from("images")
+          .upload(filePath, image);
+
+      if(errorImage){
+        // console.log("error in image")
+        // console.log("Message:", errorImage.message);
+        alert("Cannot upload your photo");
+        return;
+      }
+
+      //Update the database
+      const {data : databaseData ,error: databaseError} = await supabase.from("creators").update({name: name, url: url, description: description, imageURL: filePath}).eq("id", id);
+      if(databaseError){
+
+        console.log("error in database");
+        if(!errorImage){
+          await supabase.storage.from("images").remove([filePath]);
+        }
+
+
+        alert("Cannot update your information");
+        return;
+      }
+      
+      
+      alert("Succesfully submitted");
+
+   }
+  return(
+    <div>
+
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="name">Creator name</label>
+        <input type="text" id="name" value={name} onChange={ (e) => {setName(e.target.value)}}/> 
+
+        <label htmlFor="description">Creator description</label>
+        <textarea
+          name="description"
+          id="description"
+          value={description}
+          onChange={(e) => {setDescription(e.target.value)}}
+        >
+          Type your description here
+        </textarea>
+
+
+        <label htmlFor="image">Creator image</label>
+        <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/webp" onChange={handleImageChange}/>
+
+
+
+        <label htmlFor="url"></label>
+        <textarea
+          name="url"
+          id="url"
+          value={url}
+          onChange={(e) => {setUrl(e.target.value)}}
+        >
+          Type your creator's url here
+        </textarea>
+
+
+        <button type="submit">Save changes</button>
+
+        
+       
+      </form>
+    </div>
+  )
+}
+
+export default CreatorEdit;
