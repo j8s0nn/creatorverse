@@ -3,6 +3,7 @@
 
 import {useState} from 'react';
 import { supabase } from '../client';
+import {Link} from "react-router-dom"
 
 function CreatorEdit({id}){
 
@@ -100,12 +101,16 @@ function CreatorEdit({id}){
           Type your creator's url here
         </textarea>
 
+        
+
 
         <button type="submit">Save changes</button>
 
         
        
       </form>
+      
+      <Link to={`/creators/${id}`}> View your changes</Link>
     </div>
   )
 }
