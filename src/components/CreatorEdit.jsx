@@ -17,6 +17,8 @@ function CreatorEdit({id}){
     setImage(e.target.files[0]);
   }
 
+ 
+
    async function handleSubmit(e){
       
 
@@ -42,8 +44,15 @@ function CreatorEdit({id}){
         return;
       }
 
+
+
+      // Get the publicURL for displaying the information
+      const result = supabase.storage.from("images").getPublicUrl(filePath);
+      const publicURL = result.data.publicUrl;
+
+
       //Update the database
-      const {data : databaseData ,error: databaseError} = await supabase.from("creators").update({name: name, url: url, description: description, imageURL: filePath}).eq("id", id);
+      const {error: databaseError} = await supabase.from("creators").update({name: name, url: url, description: description, imageURL: publicURL }).eq("id", id);
       if(databaseError){
 
         console.log("error in database");
@@ -51,11 +60,9 @@ function CreatorEdit({id}){
           await supabase.storage.from("images").remove([filePath]);
         }
 
-
         alert("Cannot update your information");
         return;
       }
-      
       
       alert("Succesfully submitted");
 
