@@ -19,9 +19,22 @@ function CreatorAdd(){
 
   
   async function handleSubmit(e){
+    if (!name.trim() || !description.trim() || !url.trim()) {
+      alert("Please fill out all fields");
+      return;
+    }
+
+    if (!image) {
+      alert("Please select an image");
+      return;
+    }
+
+
+
     e.preventDefault();
 
-    const filePath = `creators/${crypto.randomUUID()}-${image.name}`;
+    //Random name for the image, prevent some invalid characters in the name
+    const filePath = `creators/${crypto.randomUUID()}.png`;
       // Upload image to storage
       const {error: errorImage } =
         await supabase.storage
@@ -32,6 +45,7 @@ function CreatorAdd(){
         // console.log("error in image")
         // console.log("Message:", errorImage.message);
         alert("Cannot upload your photo");
+        console.log(errorImage);
         return;
       }
 
@@ -95,6 +109,7 @@ function CreatorAdd(){
       </form>
       
       <Link to={`/creators/${id}`}> View your creator</Link>
+      <Link to={`/`}>Home</Link>
     </div>
 
 

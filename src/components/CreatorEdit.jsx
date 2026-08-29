@@ -21,6 +21,17 @@ function CreatorEdit({id}){
  
 
    async function handleSubmit(e){
+
+
+      if (!name.trim() || !description.trim() || !url.trim()) {
+        alert("Please fill out all fields");
+        return;
+      }
+
+      if (!image) {
+        alert("Please select an image");
+        return;
+      }
       
 
       // Prevent default behaviour
@@ -31,9 +42,11 @@ function CreatorEdit({id}){
         return;
       }
 
-      const filePath = `creators/${crypto.randomUUID()}-${image.name}`;
+      //Prevent invalid char in the name of the image.
+      const filePath = `creators/${crypto.randomUUID()}.png`;
+
       // Upload image to storage
-      const { data: dataImage, error: errorImage } =
+      const { error: errorImage } =
         await supabase.storage
           .from("images")
           .upload(filePath, image);
@@ -111,6 +124,8 @@ function CreatorEdit({id}){
       </form>
       
       <Link to={`/creators/${id}`}> View your changes</Link>
+      <Link to={`/`}>Home</Link>
+      
     </div>
   )
 }

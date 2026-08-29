@@ -60,6 +60,8 @@ function CreatorDetails({id,name, url, imageURL, description}){
           </button>
         </div>
       )}
+
+      <Link to={`/`}>Home</Link>
     
     </div>
   )
