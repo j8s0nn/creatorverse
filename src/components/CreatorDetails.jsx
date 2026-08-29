@@ -1,13 +1,40 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react';
+import { supabase } from '../client';
 
 
 function CreatorDetails({id,name, url, imageURL, description}){
 
   const [isPopup, setIsPopup] = useState(false);
-  
-  function deleteCreator(){
 
+  const navigate = useNavigate();
+  
+  async function deleteCreator(){
+    
+      const splittedURL = imageURL.split("/");
+
+      const storagePath = `creators/${splittedURL[splittedURL.length - 1]}`;
+
+      const { error: databaseError} = await supabase.from("creators").delete().eq("id", id);
+
+      if(databaseError){
+        alert("Cannot delete user from database");
+        return;
+      }
+
+
+      const { error: imageError} = await supabase.storage.from("images").remove(storagePath);
+
+      if(imageError){
+        alert("Cannot delete the image");
+        return
+      }
+
+      alert("Succesully remove this creator");
+
+      //* Return to homepage after deletion.
+      navigate("/")
+      
   }
 
   return (
