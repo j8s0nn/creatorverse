@@ -1,23 +1,47 @@
 .creator-card-main{
   width: 350px;
   max-width: 400px;
-  padding: 30px;
+  padding: 8px 8px 30px 8px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px rgb(230, 224, 224) solid;
-  background-color: lightgray;
+  border: 1px solid rgba(36, 52, 71, 0.08);
+  background-color: #fff9f9;
+  box-shadow: 0 8px 20px rgba(36, 52, 71, 0.15);
+  overflow: hidden;
 
-  background-color: #fff7ed;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.creator-card-img{
-  width: 200px;
-  height: 200px;
+.creator-card-main:hover{
+  transform: translateY(-7px);
+}
+
+.creator-card-img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 300px;
+  padding: 0px;
+
+  
+  border: 1px solid rgb(239, 243, 243);
+  border-radius: 20px;
+
+  overflow: hidden;
+
+}
+
+.creator-card-img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+
 }
+
 
 .creator-card-name{
   font-family: 'Caacupe One', sans-serif;
