@@ -1,0 +1,42 @@
+.creator-card-main{
+  width: 350px;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px rgb(230, 224, 224) solid;
+  background-color: lightgray;
+
+  background-color: #fff7ed;
+}
+
+.creator-card-img{
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.creator-card-name{
+  font-family: 'Caacupe One', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #243447;
+  margin: 20px;
+}
+
+.view-more-details-button {
+  font-family: 'Inter', sans-serif;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #243447;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 20px;
+}
