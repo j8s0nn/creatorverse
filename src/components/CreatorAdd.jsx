@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import { supabase } from '../client';
 import {Link} from "react-router-dom"
-
+import "./CreatorAdd.css"
 
 function CreatorAdd(){
 
@@ -68,48 +68,66 @@ function CreatorAdd(){
 
   }
 
-  return <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Creator name</label>
-        <input type="text" id="name" value={name} onChange={ (e) => {setName(e.target.value)}}/> 
+  return <div className='creator-add-container'>
 
-        <label htmlFor="description">Creator description</label>
-        <textarea
-          name="description"
-          id="description"
-          value={description}
-          onChange={(e) => {setDescription(e.target.value)}}
-        >
-          Type your description here
-        </textarea>
+      <div className="nav-links-container">
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to={`/creators/${id}`} className="nav-link">View creator profile</Link>
+      </div>
+
+      <form className="creator-form" onSubmit={handleSubmit}>
+        <div className='form-section'>
+            <label htmlFor="name">Creator name</label>
+            <input type="text" id="name" value={name} onChange={ (e) => {setName(e.target.value)}}/> 
+        </div>
+        
+         <div className='form-section'>
+            <label htmlFor="description">Creator description</label>
+            <textarea
+              name="description"
+              id="description"
+              value={description}
+              onChange={(e) => {setDescription(e.target.value)}}
+            >
+              Type your description here
+            </textarea>
+
+         </div>
+        
+
+        <div className='form-section'>
+
+          <label htmlFor="image">Creator image</label>
+          <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/webp" onChange={handleImageChange}/>
+
+        </div>
+        
 
 
-        <label htmlFor="image">Creator image</label>
-        <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/webp" onChange={handleImageChange}/>
+        <div className='form-section'>
+          <label htmlFor="url">Creator's URL</label>
+          <textarea
+            name="url"
+            id="url"
+            value={url}
+            onChange={(e) => {setUrl(e.target.value)}}
+          >
+            Type your creator's url here
+          </textarea>
 
-
-
-        <label htmlFor="url"></label>
-        <textarea
-          name="url"
-          id="url"
-          value={url}
-          onChange={(e) => {setUrl(e.target.value)}}
-        >
-          Type your creator's url here
-        </textarea>
+        </div>
+        
 
         
 
 
-        <button type="submit">Save changes</button>
+        <button className='save-changes-button' type="submit">Save changes</button>
 
         
        
       </form>
       
-      <Link to={`/creators/${id}`}> View your creator</Link>
-      <Link to={`/`}>Home</Link>
+      
     </div>
 
 
