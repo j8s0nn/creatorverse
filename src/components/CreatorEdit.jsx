@@ -4,6 +4,7 @@
 import {useState} from 'react';
 import { supabase } from '../client';
 import {Link} from "react-router-dom"
+import {useEffect} from "react";
 
 function CreatorEdit({id}){
 
@@ -12,16 +13,40 @@ function CreatorEdit({id}){
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(true);
 
+
+  async function fetchCreator() {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('creators')
+        .select('*')
+        .eq('id', id)
+
+      if (error) {
+        console.error('Error fetching creator:', error.message);
+        alert('Could not load creator information.');
+      } else if (data) {
+        console.log(data[0].name);
+        setName(data[0].name || '');
+        setDescription(data[0].description || '');
+        setUrl(data[0].url || '');
+      }
+      setLoading(false);
+  }
   
+    //* Fetch the existed data to display before edit.
+  useEffect(() => {
+    fetchCreator();
+  },[]);
+
+
+
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   }
 
- 
-
    async function handleSubmit(e){
-
 
       if (!name.trim() || !description.trim() || !url.trim()) {
         alert("Please fill out all fields");
@@ -33,7 +58,6 @@ function CreatorEdit({id}){
         return;
       }
       
-
       // Prevent default behaviour
       e.preventDefault();
 
@@ -58,8 +82,6 @@ function CreatorEdit({id}){
         return;
       }
 
-
-
       // Get the publicURL for displaying the information
       const result = supabase.storage.from("images").getPublicUrl(filePath);
       const publicURL = result.data.publicUrl;
@@ -81,50 +103,76 @@ function CreatorEdit({id}){
       alert("Succesfully submitted");
 
    }
+
+   if(loading){
+    <div className="empty-state">
+            <p>Loading your creators...</p>
+    </div>
+   }
+ 
+
   return(
-    <div>
+    <div className='creator-add-container'>
+      
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Creator name</label>
-        <input type="text" id="name" value={name} onChange={ (e) => {setName(e.target.value)}}/> 
+      <div className="nav-links-container">
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to={`/creators/${id}`} className="nav-link">View your changes</Link>
+      </div>
+      
+     <form className="creator-form" onSubmit={handleSubmit}>
+        <div className='form-section'>
+            <label htmlFor="name">Creator name</label>
+            <input type="text" id="name" value={name} onChange={ (e) => {setName(e.target.value)}}/> 
+        </div>
 
-        <label htmlFor="description">Creator description</label>
-        <textarea
-          name="description"
-          id="description"
-          value={description}
-          onChange={(e) => {setDescription(e.target.value)}}
-        >
-          Type your description here
-        </textarea>
+        <div className='form-section'>
+            <label htmlFor="description">Creator description</label>
+            <textarea
+              name="description"
+              id="description"
+              value={description}
+              onChange={(e) => {setDescription(e.target.value)}}
+            >
+              Type your description here
+            </textarea>
+
+         </div>
 
 
-        <label htmlFor="image">Creator image</label>
-        <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/webp" onChange={handleImageChange}/>
+        <div className='form-section'>
+
+          <label htmlFor="image">Creator image</label>
+          <input type="file" id="image" name="image" accept="image/jpeg, image/png, image/webp" onChange={handleImageChange}/>
+
+        </div>
 
 
 
-        <label htmlFor="url"></label>
-        <textarea
-          name="url"
-          id="url"
-          value={url}
-          onChange={(e) => {setUrl(e.target.value)}}
-        >
-          Type your creator's url here
-        </textarea>
+         <div className='form-section'>
+          <label htmlFor="url">Creator's URL</label>
+          <textarea
+            name="url"
+            id="url"
+            value={url}
+            onChange={(e) => {setUrl(e.target.value)}}
+          >
+            Type your creator's url here
+          </textarea>
+
+        </div>
+        
 
         
 
 
-        <button type="submit">Save changes</button>
+        <button className='save-changes-button' type="submit">Save changes</button>
 
-        
+      
        
       </form>
       
-      <Link to={`/creators/${id}`}> View your changes</Link>
-      <Link to={`/`}>Home</Link>
+
       
     </div>
   )
