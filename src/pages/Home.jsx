@@ -19,8 +19,6 @@ function Home(){
       return;
     }
 
-    console.log(data);
-
     setCreator(data);
   }
 
@@ -44,9 +42,9 @@ function Home(){
     </div>
     <div className="creators-container">
       {creators.length === 0 
-        ? <div className="empty-state">
-            <p>Loading your creators...</p>
-        </div>
+        ? <div className="empty-state-home">
+            <p>No creators yet! Add your favorite creator</p>
+          </div>
         :creators.map( (creator) => {
           return (
             <CreatorCard 
