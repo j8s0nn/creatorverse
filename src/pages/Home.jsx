@@ -44,7 +44,9 @@ function Home(){
     </div>
     <div className="creators-container">
       {creators.length === 0 
-        ? <p>Add your favorite creators</p>
+        ? <div className="empty-state">
+            <p>Loading your creators...</p>
+        </div>
         :creators.map( (creator) => {
           return (
             <CreatorCard 
